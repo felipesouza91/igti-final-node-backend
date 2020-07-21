@@ -9,7 +9,9 @@ const TransactionController = {
         error: `É necessario informar o parametro "period", cujo o valor deve estar no formato yyyy-mm`,
       });
     }
-    const result = await Transactions.find({ yearMonth: period });
+    const result = await Transactions.find({ yearMonth: period }).sort({
+      day: 'asc',
+    });
 
     return res.json({ size: result.length, transactions: result });
   },
@@ -31,8 +33,8 @@ const TransactionController = {
         month,
         day,
         type,
-        yearMonth: ` ${year}-${month}`,
-        yearMonthDay: ` ${year}-${month}-${day}`,
+        yearMonth: `${year}-${month}`,
+        yearMonthDay: `${year}-${month}-${day}`,
       };
       const result = await Transactions.create(transaction);
       return res.status(201).json(result);
@@ -87,8 +89,8 @@ const TransactionController = {
         month,
         day,
         type,
-        yearMonth: ` ${year}-${month}`,
-        yearMonthDay: ` ${year}-${month}-${day}`,
+        yearMonth: `${year}-${month}`,
+        yearMonthDay: `${year}-${month}-${day}`,
       };
 
       const updateTransaction = await Transactions.findByIdAndUpdate(
